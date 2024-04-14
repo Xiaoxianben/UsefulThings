@@ -18,10 +18,5 @@ build
 .gradle
 
 # other
-eclipse
-run/*
-!run/SinglePlayer.txt
-runServer/*
-!runServer/eula.txt
-!runServer/server.properties
-
+run
+runServer
