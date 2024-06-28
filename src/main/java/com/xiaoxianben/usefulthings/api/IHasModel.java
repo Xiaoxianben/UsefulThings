@@ -1,4 +1,4 @@
-package com.xiaoxianben.usefulthings.util;
+package com.xiaoxianben.usefulthings.api;
 
 public interface IHasModel {
     void registerModels();

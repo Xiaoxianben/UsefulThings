@@ -1,0 +1,17 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "all": "usefulthings:blocks/infinite_water"
+        },
+        "model": "usefulthings:block_all"
+    },
+    "variants": {
+        "normal": [
+            {}
+        ],
+        "inventory": {
+            "transform": "forge:default-block"
+        }
+    }
+}

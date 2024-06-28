@@ -1,0 +1,17 @@
+{
+    "forge_marker": 1,
+    "variants": {
+        "lingqi": {
+            "model": "forge:fluid",
+            "custom": {
+                "fluid": "lingqi"
+            }
+        },
+        "lingqi_fluid": {
+            "model": "forge:fluid",
+            "custom": {
+                "fluid": "lingqi_fluid"
+            }
+        }
+    }
+}

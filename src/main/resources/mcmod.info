@@ -2,7 +2,7 @@
     {
         "modid": "usefulthings",
         "name": "Useful Things",
-        "description": "a mod that adds some useful items / blocks.",
+        "description": "useful things is mod for minecraft and add some useful items/blocks.",
         "version": "${version}",
         "mcversion": "${mcversion}",
         "url": "",

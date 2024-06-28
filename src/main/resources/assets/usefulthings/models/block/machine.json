@@ -1,0 +1,9 @@
+{
+    "parent": "usefulthings:block/machinebase",
+    "textures": {
+        "side": "usefulthings:blocks/machine/frame",
+        "up": "usefulthings:blocks/machine/up",
+        "down": "usefulthings:blocks/machine/down",
+        "front": "#front"
+    }
+}

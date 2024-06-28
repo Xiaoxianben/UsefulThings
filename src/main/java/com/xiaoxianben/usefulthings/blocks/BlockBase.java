@@ -1,10 +1,10 @@
 package com.xiaoxianben.usefulthings.blocks;
 
 import com.xiaoxianben.usefulthings.UsefulThings;
+import com.xiaoxianben.usefulthings.api.IHasModel;
 import com.xiaoxianben.usefulthings.init.ModBlocks;
 import com.xiaoxianben.usefulthings.init.ModCreativeTab;
 import com.xiaoxianben.usefulthings.init.ModItems;
-import com.xiaoxianben.usefulthings.util.IHasModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
