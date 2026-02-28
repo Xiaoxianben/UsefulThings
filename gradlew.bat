@@ -17,7 +17,7 @@ set APP_HOME=%DIRNAME%
 set DEFAULT_JVM_OPTS=
 
 @rem Find java.exe
-if defined JAVA_HOME goto findJavaFromJavaHome
+if defined JAVA8_HOME goto findJavaFromJavaHome
 
 set JAVA_EXE=java.exe
 %JAVA_EXE% -version >NUL 2>&1
@@ -32,8 +32,8 @@ echo location of your Java installation.
 goto fail
 
 :findJavaFromJavaHome
-set JAVA_HOME=%JAVA_HOME:"=%
-set JAVA_EXE=%JAVA_HOME%/bin/java.exe
+set JAVA_HOME=%JAVA8_HOME:"=%
+set JAVA_EXE=%JAVA8_HOME%/bin/java.exe
 
 if exist "%JAVA_EXE%" goto init
 

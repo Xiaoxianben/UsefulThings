@@ -1,32 +1,16 @@
 buildscript {
     repositories {
-        if (use_mirror_url == "true") {
-            // clear all proxy settings, this is available for global
-            System.clearProperty "http.proxyHost"
-            System.clearProperty "http.proxyPort"
-            System.clearProperty "https.proxyHost"
-            System.clearProperty "https.proxyPort"
-            System.clearProperty "socksProxyHost"
-            System.clearProperty "socksProxyPort"
-            System.setProperty "java.net.useSystemProxies", "false"
-
-            maven { url "https://maven.aliyun.com/nexus/content/groups/public" }
-            maven { url "https://${mirror_maven_url}" }
-        } else {
-            mavenCentral()
-            maven { url "https://maven.minecraftforge.net" }
-        }
+        jcenter()
+        mavenCentral()
+        maven { url = "https://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:${forge_gradle_version}"
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
-
-boolean useMirror = use_mirror_url == "true"
-if (useMirror) apply from: "mirror.gradle"
-apply plugin: "net.minecraftforge.gradle.forge"
-apply from: "runmanager.gradle"
+apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply from: "mirror.gradle"
 
 version = "${modVersion}"
 group = "com.xiaoxianben.usefulthings" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -38,7 +22,6 @@ compileJava {
 }
 
 minecraft {
-//  version = "1.12.2-14.23.5.2768"
     version = "1.12.2-14.23.5.2847"
     runDir = "run"
 
@@ -111,15 +94,19 @@ processResources {
     }
 }
 
-tasks.register('buildJar', Delete) {
-    dependsOn 'build'
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
 
-    delete "build\\combined"
-    delete "build\\retromapping"
-    delete "build\\sources"
-    delete "build\\tmp"
-
-    doLast {
-        println "Jar is building now."
+sourceSets {
+    main {
+        output.resourcesDir = file('build/combined')
+        java.outputDir = file('build/combined')
     }
+}
+
+sourceSets.main.resources { srcDir 'src/main/resources' }
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

@@ -1,15 +1,15 @@
 package com.xiaoxianben.usefulthings;
 
-import com.xiaoxianben.usefulthings.TileEntity.TEInfiniteWater;
-import com.xiaoxianben.usefulthings.TileEntity.generator.TEGeneratorLingQI;
-import com.xiaoxianben.usefulthings.TileEntity.machine.TEMachineLingQICompression;
-import com.xiaoxianben.usefulthings.TileEntity.machine.TEMachineLingQIGatherer;
-import com.xiaoxianben.usefulthings.TileEntity.machine.TEMachineTimeWarp;
 import com.xiaoxianben.usefulthings.config.ConfigLoader;
 import com.xiaoxianben.usefulthings.gui.GUIHandler;
-import com.xiaoxianben.usefulthings.init.*;
+import com.xiaoxianben.usefulthings.init.ModJsonRecipes;
+import com.xiaoxianben.usefulthings.init.ModOre;
+import com.xiaoxianben.usefulthings.init.ModRecipe;
+import com.xiaoxianben.usefulthings.init.ModRegisterer;
 import com.xiaoxianben.usefulthings.packet.GuiClientToSever;
 import com.xiaoxianben.usefulthings.proxy.ProxyBase;
+import com.xiaoxianben.usefulthings.tileEntity.TEAltar;
+import com.xiaoxianben.usefulthings.tileEntity.auto.TEAutoMachine;
 import com.xiaoxianben.usefulthings.util.ModInformation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -24,8 +24,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(
-        modid = ModInformation.MOD_ID,
+import java.util.Random;
+
+@Mod(modid = ModInformation.MOD_ID,
         name = ModInformation.NAME,
         version = ModInformation.VERSION
 )
@@ -37,6 +38,8 @@ public class UsefulThings {
 
     @SidedProxy(clientSide = ModInformation.CLIENT_PROXY_CLASS, serverSide = ModInformation.SERVER_PROXY_CLASS)
     public static ProxyBase proxy;
+
+    public static Random randomer = new Random();
 
 
     private SimpleNetworkWrapper network;
@@ -53,20 +56,17 @@ public class UsefulThings {
     public void preInit(FMLPreInitializationEvent event) {
         ConfigLoader.preInitConfigLoader(event);
 
-        ModItems.initItem();
-        ModFluid.initFluid();
-        ModBlocks.initBlock();
-
+        ModRegisterer.preInit();
     }
 
     @EventHandler
     public void Init(FMLInitializationEvent event) {
         ModOre.init();
 
+        ModRegisterer.initFirst();
+        ModJsonRecipes.init();
         ModRecipe.initRecipes();
-
-        ModItems.initItemRecipe();
-        ModBlocks.initBlockRecipe();
+        ModRegisterer.initEnd();
 
         this.RegisterTileEntity();
 
@@ -80,11 +80,8 @@ public class UsefulThings {
     }
 
     private void RegisterTileEntity() {
-        GameRegistry.registerTileEntity(TEInfiniteWater.class, new ResourceLocation(ModInformation.MOD_ID, "TEInfiniteWater"));
-        GameRegistry.registerTileEntity(TEMachineLingQIGatherer.class, new ResourceLocation(ModInformation.MOD_ID, "TELingQIGatherer"));
-        GameRegistry.registerTileEntity(TEMachineLingQICompression.class, new ResourceLocation(ModInformation.MOD_ID, "TELingQICompression"));
-        GameRegistry.registerTileEntity(TEGeneratorLingQI.class, new ResourceLocation(ModInformation.MOD_ID, "TEGeneratorLingQI"));
-        GameRegistry.registerTileEntity(TEMachineTimeWarp.class, new ResourceLocation(ModInformation.MOD_ID, "TEMachineTimeWarp"));
+        GameRegistry.registerTileEntity(TEAltar.class, new ResourceLocation(ModInformation.MOD_ID, "TEAltar"));
+        GameRegistry.registerTileEntity(TEAutoMachine.class, new ResourceLocation(ModInformation.MOD_ID, "TEAutoMachine"));
     }
 
 }

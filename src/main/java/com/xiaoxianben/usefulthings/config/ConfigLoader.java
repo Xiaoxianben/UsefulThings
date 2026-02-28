@@ -1,8 +1,6 @@
 package com.xiaoxianben.usefulthings.config;
 
-import com.xiaoxianben.usefulthings.init.ModBlocks;
 import com.xiaoxianben.usefulthings.util.ModInformation;
-import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -10,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.io.File;
-import java.util.Arrays;
 
 public class ConfigLoader {
 
@@ -22,8 +19,8 @@ public class ConfigLoader {
     public static void preInitConfigLoader(@Nonnull FMLPreInitializationEvent event) {
         logger = event.getModLog();
 
-        ConfigValue.modConfigurationParentDirectory = event.getModConfigurationDirectory().getAbsolutePath();
-        ConfigValue.modConfigurationDirectory = ConfigValue.modConfigurationParentDirectory + "/" + ModInformation.MOD_ID + "/";
+        ConfigValue.modConfigurationParentDirectory = event.getModConfigurationDirectory().getAbsolutePath() + File.separator;
+        ConfigValue.modConfigurationDirectory = ConfigValue.modConfigurationParentDirectory + File.separator + ModInformation.MOD_ID + File.separator;
 
         config = new Configuration(new File(ConfigValue.modConfigurationDirectory + ModInformation.MOD_ID + ".cfg"));
 
@@ -42,10 +39,7 @@ public class ConfigLoader {
     public static void load() {
         logger.info("Started loading config.");
 
-        //读取配置文件
-        String[] blackListStr = getStringList("blackList", new String[]{});
-        ConfigValue.blackList.add(ModBlocks.BLOCK_TIME_WARP);
-        Arrays.stream(blackListStr).filter(s -> !s.isEmpty() || Block.getBlockFromName(s) != null).forEach(s -> ConfigValue.blackList.add(Block.getBlockFromName(s)));
+        ConfigValue.auto_charge_energy_finish = config.getInt("auto_charge_energy_finish", Configuration.CATEGORY_GENERAL, 5000, 0, 1000000000, I18n.format("config.ut-auto_charge_energy_finish.comment"));
 
         config.save(); //保存配置
         //至于为什么要保存配置呢？这是因为当配置缺失（最常见的原因就是配置文件没有创建，

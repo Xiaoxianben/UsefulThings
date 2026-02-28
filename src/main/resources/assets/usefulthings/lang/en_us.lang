@@ -1,30 +1,22 @@
-itemGroup.mod_creative_tab=Useful Things
+itemGroup.usefulthings=Useful Things
 
-tile.ut-block_ling_qi.name=Ling Qi Block
-tile.ut-block_infinite_water.name=Infinite Water Source
-tile.ut-machine_lingqi_gatherer.name=Ling Qi Gatherer Machine
-tile.ut-machine_lingqi_compression.name=Ling Qi Compression Machine
-tile.ut-machine_timewarp.name=Time Warpper
-tile.ut-generator_lingqi.name=Ling Qi Generator
-tile.ut-lingqi.name=Ling Qi
-tile.ut-lingqi_fluid.name=Ling Qi Fluid
+tile.ut-auto_machine.0.name=Auto Craft
+tile.ut-auto_machine.1.name=Auto Metallurgy
+tile.ut-auto_machine.2.name=Auto Furnace
+tile.ut-auto_machine.3.name=Auto Pulverizer
+tile.ut-auto_machine.4.name=Auto Extruder
+tile.ut-auto_machine.5.name=Auto Crucible
+tile.ut-auto_machine.6.name=Auto Charger
+tile.ut-auto_machine.7.name=Auto Broken Mine
+tile.ut-auto_machine.8.name=Auto Decompress
+tile.ut-auto_machine.9.name=Auto Compress
+tile.ut-auto_machine.10.name=Auto Chemical
+tile.ut-auto_machine.11.name=Auto Electrolysis
+tile.ut-auto_machine.12.name=Auto Washes
+tile.ut-auto_machine.13.name=Auto Place
+tile.ut-auto_machine.14.name=Auto Break
 
-item.ut-virtual_water.name=Virtual Water Source
-item.ut-lingqi_ingot.name=Ling Qi Ingot
-item.ut-component_null.name=Component - null
-item.ut-component_machine.name=Components - machine upgrades
-
-fluid.lingqi=Ling Qi
-fluid.lingqi_fluid=Ling Qi Fluid
-
-item.ut-virtual_water.information=Unlimited Water
-item.ut-virtual_water.mode-true=Mode: Place
-item.ut-virtual_water.mode-false=Mode: Fill
-
-block.ut-block_infinite_water.information=Infinite water sources, which will automatically fill the surrounding blocks
-
-config.ut-blackList.comment=Config Of Time Warper: The blacklist of the time warper, blocks in the blacklist will not be accelerated. The added content is the register name of the block.
-
-# JEI
-RC.lingQiGatherer.title=Ling Qi Gatherer Machine
-RC.lingqiCompression.title=Ling Qi Compression Machine
+level.ut-abnormal.name=abnormal
+level.ut-attachedLing.name=attachedLing
+level.ut-super.name=super
+level.ut-truth.name=truth

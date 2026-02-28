@@ -1,30 +1,22 @@
-itemGroup.mod_creative_tab=有用作品
+itemGroup.usefulthings=有用作品
 
-tile.ut-block_ling_qi.name=灵气块
-tile.ut-block_infinite_water.name=无限水源
-tile.ut-machine_lingqi_gatherer.name=灵气采集器
-tile.ut-machine_lingqi_compression.name=灵气压缩器
-tile.ut-machine_timewarp.name=时间扭曲器
-tile.ut-generator_lingqi.name=灵气发电机
-tile.ut-lingqi.name=灵气
-tile.ut-lingqi_fluid.name=液态灵气
+tile.ut-auto_machine.0.name=自动合成器
+tile.ut-auto_machine.1.name=自动合金炉
+tile.ut-auto_machine.2.name=自动熔炉
+tile.ut-auto_machine.3.name=自动磨粉机
+tile.ut-auto_machine.4.name=自动造石机
+tile.ut-auto_machine.5.name=自动熔炼机
+tile.ut-auto_machine.6.name=自动充电器
+tile.ut-auto_machine.7.name=自动破矿机
+tile.ut-auto_machine.8.name=自动压缩机
+tile.ut-auto_machine.9.name=自动解压机
+tile.ut-auto_machine.10.name=自动化学池
+tile.ut-auto_machine.11.name=自动电解池
+tile.ut-auto_machine.12.name=自动清洗槽
+tile.ut-auto_machine.13.name=自动放置器
+tile.ut-auto_machine.14.name=自动破坏器
 
-item.ut-virtual_water.name=虚拟水源
-item.ut-lingqi_ingot.name=灵气锭
-item.ut-component_null.name=组件-空
-item.ut-component_machine.name=组件-机器升级
-
-fluid.lingqi=灵气
-fluid.lingqi_fluid=液态灵气
-
-item.ut-virtual_water.information=无限的水源
-item.ut-virtual_water.mode-true=模式: 放置
-item.ut-virtual_water.mode-false=模式: 填充
-
-block.ut-block_infinite_water.information=无限的水源，会自动将水填充到四周的方块
-
-config.ut-blackList.comment=时间扭曲器的设置：时间扭曲器的黑名单，在黑名单内的方块将不被加速。添加的内容为方块的注册名。
-
-# JEI
-RC.lingqiCompression.title=灵气压缩器
-RC.lingQiGatherer.title=灵气采集器
+level.ut-abnormal.name=异常
+level.ut-attachedLing.name=附灵
+level.ut-super.name=超级
+level.ut-truth.name=真理

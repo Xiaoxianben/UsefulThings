@@ -1,28 +1,19 @@
 
 buildscript {
     repositories {
-        maven { url "https://maven.aliyun.com/nexus/content/groups/public" }
-        maven { url "https://${mirror_maven_url}" }
+        jcenter()
+        mavenCentral()
+        maven { url = "https://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:${forge_gradle_version}"
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
     }
 }
 
 repositories {
-    if (use_mirror_url == "true") {
-        // remove minecraft and forge maven repositories to avoid interference
-        removeIf {
-            it instanceof MavenArtifactRepository &&
-                    (it.url.toString() == "https://repo.maven.apache.org/maven2/" ||
-                            it.url.toString() == "https://maven.minecraftforge.net" ||
-                            it.url.toString() == "https://libraries.minecraft.net/")
-        }
-        // add mirror repositories
-        maven { url "https://maven.aliyun.com/nexus/content/groups/public" }
-        maven { url "file://${projectDir}/.gradle/local-repo" }
-        maven { url "https://${mirror_maven_url}" }
-    }
+    mavenCentral()
+    maven { url = "https://files.minecraftforge.net/maven" }
+    maven { url "https://maven.aliyun.com/nexus/content/groups/public" }
 }
 
 import net.minecraftforge.gradle.common.BasePlugin
@@ -51,7 +42,7 @@ void initConstantPool(Class<?> clazz) {
 }
 
 // replace string values in constant pools
-void replaceString(String str1, String str2) {
+static void replaceString(String str1, String str2) {
     String.class.getDeclaredField "value" with {
         it.setAccessible true
         it.set str1, str2.toCharArray()
@@ -81,19 +72,10 @@ for (clazz in classToInit) {
     initConstantPool Unsafe.theUnsafe.allocateInstance(clazz).class
 }
 
-replaceString "https://launchermeta.mojang.com/mc/game/version_manifest.json", redirectUrl("https://${mirror_assets_url}/mc/game/version_manifest.json")
-replaceString "http://resources.download.minecraft.net/", "https://download.mcbbs.net/assets/" // use MCBBS mirror due to there"s no way to hook http 302 response when downloading assets
-replaceString "https://libraries.minecraft.net/", "https://${mirror_maven_url}"
-replaceString "https://maven.minecraftforge.net", "https://${mirror_maven_url}"
-replaceString "https://maven.minecraftforge.net/de/oceanlabs/mcp/versions.json", redirectUrl("https://${mirror_maven_url}/de/oceanlabs/mcp/versions.json")
-
-tasks.whenTaskAdded {
-    if (it.name == "getVersionJson") it.dependsOn mirrorManifest
-    if (it.name == "getVersionJson" || it.name == "extractUserdev") it.finalizedBy mirrorVersionJson
-}
+replaceString "http://resources.download.minecraft.net/", "https://resources.download.minecraft.net/"
 
 // this task is to replace urls in version manifest json (https://launchermeta.mojang.com/mc/game/version_manifest.json)
-task mirrorManifest {
+tasks.register('mirrorManifest') {
     doLast {
         ForgePlugin forge = project.plugins.findPlugin ForgePlugin.class
         BasePlugin.class.getDeclaredField "mcManifest" with {
@@ -106,7 +88,7 @@ task mirrorManifest {
 }
 
 // this task is to replace urls in version json (https://launchermeta.mojang.com/v1/packages/6e69e85d0f85f4f4b9e12dd99d102092a6e15918/1.12.2.json)
-task mirrorVersionJson {
+tasks.register('mirrorVersionJson') {
     doLast {
         ForgePlugin forge = project.plugins.findPlugin ForgePlugin.class
         BasePlugin.class.getDeclaredField "mcVersionJson" with {
@@ -121,50 +103,55 @@ task mirrorVersionJson {
     }
 }
 
-afterEvaluate {
-    ForgePlugin forge = project.plugins.findPlugin ForgePlugin.class
-
-    def mcpName = forge.delayedString("mcp_${Constants.REPLACE_MCP_CHANNEL}").call()
-    def mcpVersion = forge.delayedString("${Constants.REPLACE_MCP_VERSION}-${Constants.REPLACE_MCP_MCVERSION}").call()
-    def mcpBasePath = "/de/oceanlabs/mcp/${mcpName}/${mcpVersion}/${mcpName}-${mcpVersion}."
-    def mcpBaseUrl = "https://${mirror_maven_url}${mcpBasePath}"
-    new URL("${mcpBaseUrl}zip").withInputStream { is ->
-        Files.copy(is, file("${projectDir}/.gradle/local-repo${mcpBasePath}zip").toPath().with { path ->
-            Files.createDirectories(path.parent)
-            path
-        }, StandardCopyOption.REPLACE_EXISTING)
-    }
-    file("${projectDir}/.gradle/local-repo${mcpBasePath}pom").withWriter { writer ->
-        writer.write("""\
-            <?xml version="1.0" encoding="UTF-8"?>
-            <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-                <modelVersion>4.0.0</modelVersion>
-                <groupId>de.oceanlabs.mcp</groupId>
-                <artifactId>${mcpName}</artifactId>
-                <version>${mcpVersion}</version>
-                <packaging>zip</packaging>
-            </project>
-            """.stripIndent())
-    }
-
-    def mcVersion = forge.delayedString("${Constants.REPLACE_MC_VERSION}").call()
-    def mcBasePath = "/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}"
-    def mcBaseUrl = "https://${mirror_maven_url}${mcBasePath}"
-    new URL("${mcBaseUrl}-srg.zip").withInputStream { is ->
-        Files.copy(is, file("${projectDir}/.gradle/local-repo${mcBasePath}-srg.zip").toPath().with { path ->
-            Files.createDirectories(path.parent)
-            path
-        }, StandardCopyOption.REPLACE_EXISTING)
-    }
-    file("${projectDir}/.gradle/local-repo${mcBasePath}.pom").withWriter { writer ->
-        writer.write("""\
-            <?xml version="1.0" encoding="UTF-8"?>
-            <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-                <modelVersion>4.0.0</modelVersion>
-                <groupId>de.oceanlabs.mcp</groupId>
-                <artifactId>mcp</artifactId>
-                <version>${mcVersion}</version>
-            </project>
-            """.stripIndent())
-    }
+tasks.whenTaskAdded {
+    if (it.name == "getVersionJson") it.dependsOn mirrorManifest
+    if (it.name == "getVersionJson" || it.name == "extractUserdev") it.finalizedBy mirrorVersionJson
 }
+
+//afterEvaluate {
+//    ForgePlugin forge = project.plugins.findPlugin ForgePlugin.class
+//
+//    def mcpName = forge.delayedString("mcp_${Constants.REPLACE_MCP_CHANNEL}").call()
+//    def mcpVersion = forge.delayedString("${Constants.REPLACE_MCP_VERSION}-${Constants.REPLACE_MCP_MCVERSION}").call()
+//    def mcpBasePath = "/de/oceanlabs/mcp/${mcpName}/${mcpVersion}/${mcpName}-${mcpVersion}."
+//    def mcpBaseUrl = "https://files.minecraftforge.net/maven${mcpBasePath}}"
+//    new URL("${mcpBaseUrl}zip").withInputStream { is ->
+//        Files.copy(is, file("${projectDir}/.gradle/local-repo${mcpBasePath}zip").toPath().with { path ->
+//            Files.createDirectories(path.parent)
+//            path
+//        }, StandardCopyOption.REPLACE_EXISTING)
+//    }
+//    file("${projectDir}/.gradle/local-repo${mcpBasePath}pom").withWriter { writer ->
+//        writer.write("""\
+//            <?xml version="1.0" encoding="UTF-8"?>
+//            <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+//                <modelVersion>4.0.0</modelVersion>
+//                <groupId>de.oceanlabs.mcp</groupId>
+//                <artifactId>${mcpName}</artifactId>
+//                <version>${mcpVersion}</version>
+//                <packaging>zip</packaging>
+//            </project>
+//            """.stripIndent())
+//    }
+//
+//    def mcVersion = forge.delayedString("${Constants.REPLACE_MC_VERSION}").call()
+//    def mcBasePath = "/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}"
+//    def mcBaseUrl = "https://files.minecraftforge.net/maven${mcBasePath}"
+//    new URL("${mcBaseUrl}-srg.zip").withInputStream { is ->
+//        Files.copy(is, file("${projectDir}/.gradle/local-repo${mcBasePath}-srg.zip").toPath().with { path ->
+//            Files.createDirectories(path.parent)
+//            path
+//        }, StandardCopyOption.REPLACE_EXISTING)
+//    }
+//    file("${projectDir}/.gradle/local-repo${mcBasePath}.pom").withWriter { writer ->
+//        writer.write("""\
+//            <?xml version="1.0" encoding="UTF-8"?>
+//            <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+//                <modelVersion>4.0.0</modelVersion>
+//                <groupId>de.oceanlabs.mcp</groupId>
+//                <artifactId>mcp</artifactId>
+//                <version>${mcVersion}</version>
+//            </project>
+//            """.stripIndent())
+//    }
+//}

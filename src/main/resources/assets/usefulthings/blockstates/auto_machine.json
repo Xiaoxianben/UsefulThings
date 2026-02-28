@@ -1,0 +1,118 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "front": "usefulthings:blocks/auto/craft"
+        },
+        "model": "usefulthings:machine"
+    },
+    "variants": {
+        "normal": [
+            {}
+        ],
+        "facing": {
+            "north": {
+                "y": 0
+            },
+            "south": {
+                "y": 180
+            },
+            "west": {
+                "y": 270
+            },
+            "east": {
+                "y": 90
+            }
+        },
+        "type": {
+            "0": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/craft"
+                }
+            },
+            "1": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/metallurgy"
+                }
+            },
+            "2": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/furnace"
+                }
+            },
+            "3": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/pulverizer"
+                }
+            },
+            "4": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/extruder"
+                }
+            },
+            "5": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/crucible"
+                }
+            },
+            "6": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/charger"
+                }
+            },
+            "7": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/broken_miner"
+                }
+            },
+            "8": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/decompress"
+                }
+            },
+            "9": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/compress"
+                }
+            },
+            "10": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/chemical"
+                }
+            },
+            "11": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/electrolysis"
+                }
+            },
+            "12": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/washes"
+                }
+            },
+            "13": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/placer"
+                }
+            },
+            "14": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/clicker"
+                }
+            },
+            "15": {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/infusion"
+                }
+            }
+        },
+        "inventory": [
+            {
+                "textures": {
+                    "front": "usefulthings:blocks/auto/craft"
+                },
+                "transform": "forge:default-block"
+            }
+        ]
+    }
+}
